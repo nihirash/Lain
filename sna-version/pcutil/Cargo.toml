@@ -1,0 +1,17 @@
+[package]
+name = "sna-upload"
+version = "0.1.0"
+edition = "2021"
+authors = ["Alex Nihirash <anihirash@gmail.com>"]
+
+[dependencies]
+clap = { version = "4.0.23", features = ["derive"] }
+log = "0.4.8"
+simple_logger = "4.0.0" 
+
+[profile.release]
+strip = true
+lto = true
+opt-level = "z"
+codegen-units = 1
+panic = "abort"
