@@ -23,7 +23,7 @@ fn read_file(name: String) -> std::io::Result<Vec<u8>> {
     let mut buffer: Vec<u8> = Vec::new();
     file.read_to_end(&mut buffer)?;
 
-    if buffer.len() != 49179 || buffer.len() != 131103 {
+    if buffer.len() != 49179 && buffer.len() != 131103 {
         warn!("Unusual snapshot size: {}", buffer.len());
     }
 
