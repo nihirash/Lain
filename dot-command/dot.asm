@@ -1,6 +1,7 @@
     device ZXSPECTRUM48
     org #2000
 
+text
     include "modules/version.asm"
     jp start
 ver db "Lain SNA v. ", VERSION_STRING, 13
@@ -9,7 +10,15 @@ ver db "Lain SNA v. ", VERSION_STRING, 13
     include "modules/display.asm"
     include "modules/wifi.asm"
     include "modules/esxdos.asm"
+
+    IFDEF UNO
     include "drivers/zxuno.asm"
+    ENDIF
+
+    IFDEF AY
+    include "drivers/ay.asm"
+    ENDIF
+
 start:
     printMsg ver
     call EsxDOS.prepareFile
@@ -24,5 +33,4 @@ msg_my_ip db "Device IP: ", 0
 new_line db 13, "Listening port: 6144", 13, 0
 
 buffer = #8000
-
-    savebin "lain", #2000, $ - #2000
+    savebin "lain", text, $ - text
