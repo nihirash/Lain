@@ -1,5 +1,5 @@
 SOURCES=$(shell find . -type f -iname  "*.asm")
-BINARY=netman.cod
+BINARY=lain
 VERSION=$(shell cat version.def)
 
 ay:
@@ -9,4 +9,4 @@ zxuno:
 		sjasmplus dot.asm -DUNO -DV=$(VERSION)
 
 clean:
-		rm -f $(BINARY) *.sld netman.?c
+		rm -f $(BINARY) *.sld

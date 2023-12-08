@@ -1,5 +1,6 @@
-    module UartImpl
-    assert $ > #8000 ;; Important keep it in FAST memory
+    module Uart
+;   Dot commands reside in ESXDOS memory, it's not slow
+;    assert $ > #8000 ;; Important keep it in FAST memory
 init:
     di
     ld a, #07
@@ -23,49 +24,6 @@ init:
 .flush
     halt
     djnz .flush
-    call setSpeed
-    ret
-
-dataSequence:
-
-    db  #f6,  #fe,  #f6,  #fe,  #fe,  #f6,  #f6,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #fe,  #f6,  #fe,  #f6,  #f6,  #f6,  #f6,  #fe
-    db  #f6,  #fe,  #f6,  #f6,  #f6,  #f6,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #fe,  #f6,  #fe,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #fe,  #fe,  #f6,  #fe,  #f6,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #fe,  #f6,  #fe,  #f6,  #fe,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #fe,  #f6,  #f6,  #f6,  #f6,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #f6,  #fe,  #f6,  #f6,  #fe,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #fe,  #f6,  #fe,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #fe,  #fe,  #fe,  #fe,  #fe,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #fe,  #f6,  #f6,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #fe,  #f6,  #fe,  #f6,  #f6,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #f6,  #fe,  #fe,  #f6,  #f6,  #f6,  #fe,  #f6,  #fe
-    db  #f6,  #fe,  #f6,  #fe,  #fe,  #fe,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #fe,  #f6,  #f6,  #fe,  #fe,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #fe,  #fe,  #f6,  #fe,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #f6,  #f6,  #fe,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #f6,  #f6,  #fe,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #fe,  #fe,  #f6,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #f6,  #fe,  #fe,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #fe,  #fe,  #f6,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #fe,  #f6,  #f6,  #f6,  #fe,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #fe,  #fe,  #f6,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #f6,  #f6,  #fe,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #f6,  #fe,  #fe,  #f6,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #fe,  #f6,  #f6,  #fe,  #fe,  #f6,  #f6,  #fe
-    db  #f6,  #fe,  #f6,  #fe,  #fe,  #f6,  #f6,  #f6,  #f6,  #fe
-    db  #f6,  #f6,  #fe,  #f6,  #fe,  #f6,  #f6,  #f6,  #f6,  #fe
-dataSize = $ - dataSequence
-; Total bytes 28 
-
-setSpeed:
-    ld hl, dataSequence : ld bc, #bffd
-    di
-    dup dataSize
-    outi : ld bc, #bffd : nop
-    edup
-    ei
     ret
 
 
@@ -324,7 +282,9 @@ secondByteFinished:
     ei 
     ret
 
+
 _baud dw 11 ; 54 - 2400 --- 25 - 4800 --- 11 - 9600
 _isSecondByteAvail dw #0
-                   dw #0
+_testByte dw #0
+
     endmodule
